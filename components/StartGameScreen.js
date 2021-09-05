@@ -1,22 +1,42 @@
-import React from "react";
-import { View, StyleSheet, Text, TextInput, Button} from "react-native";
+import React, {useState} from "react";
+import { View, StyleSheet, Text, TextInput, Button, TouchableWithoutFeedback, Keyboard} from "react-native";
 import Card from "./Card";
+import Colors from "../constants/Colors";
+import Input from "./Input";
 
 const StartGameScreen = props =>{
+
+    const [enteredNumber, setEnteredNumber] = useState('');
+
+    const numberInputHandler = inputText => {
+        setEnteredNumber(inputText.replace(/[^0-9]/g, ''));
+    };
+
     return (
+        <TouchableWithoutFeedback onPress={() => {
+            Keyboard.dismiss();
+        }}>
         <View style={styles.container}>
             <Text style={styles.title}>Start a new Game</Text>
             <Card style={styles.inputContainer}>
                 <Text>Select a number</Text>
-                <TextInput/>
+                <Input style={styles.input} 
+                blurOnSubmit 
+                autoCapitilize='none' 
+                autoCorrect={false} 
+                keyboardType='number-pad' 
+                maxLength={2}
+                onChangeText={numberInputHandler}
+                value = {enteredNumber}  />
                 <View style={styles.buttonContainer}>
-                    <View style={styles.flexBtn}><Button title="Reset" onPress={()=> {}} color="#c717fc" /></View>
-                    <View style={styles.flexBtn}><Button title="Confirm" onPress={()=> {}} color="#f7287b" /></View>
+                    <View style={styles.flexBtn}><Button title="Reset" onPress={()=> {}} color={Colors.accent} /></View>
+                    <View style={styles.flexBtn}><Button title="Confirm" onPress={()=> {}} color={Colors.primary} /></View>
                 </View>
             </Card>
         </View>
+        </TouchableWithoutFeedback>
     );
-}
+};
 
 const styles = StyleSheet.create({
     container:{
@@ -45,6 +65,11 @@ const styles = StyleSheet.create({
         width: '40%',
         textAlign: 'center',
         alignItems: 'center',
+    },
+
+    input: {
+        width: 50,
+        textAlign: 'center'
     }
 })
 
